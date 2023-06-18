@@ -73,7 +73,7 @@ class IMS:
 
     def customer(self):
         self.new_win = Toplevel(self.root)
-        self.new_obj = projectClass(self.new_win)
+        self.new_obj = customerClass(self.new_win)
 
 if __name__=="__main__":
     root = Tk()

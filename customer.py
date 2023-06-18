@@ -29,7 +29,7 @@ class customerClass:
 
         # search Frame
         SearchFrame = LabelFrame(self.root, text = "Search Employee", font = ("goudy old style", 12, "bold"), bg = "white")
-        SearchFrame.place(x = 250, y = 20, width = 600, height = 70)
+        # SearchFrame.place(x = 250, y = 20, width = 600, height = 70)
 
         # options
         lbl_search = Label(SearchFrame, text= "Search By Invoice No", bg = "white", font = ("goudy old style", 15))
@@ -39,37 +39,36 @@ class customerClass:
         btn_search = Button(SearchFrame, command=self.search, text = "Search", font = ("goudy old style", 15), bg = "#4caf50", cursor="hand2", fg="white").place(x = 410, y = 9, width = 150, height = 30)
 
         # title
-        title = Label(self.root, text = "Customer Details", font = ("goudy old style", 15), bg = "#0f4d7d", fg = "white").place(x = 50, y = 100, width=1000)
+        title = Label(self.root, text = "Customer Details", font = ("goudy old style", 20, "bold"), bg = "#0f4d7d", fg = "white").place(x = 50, y = 10, width=1000, height=40)
 
         # content
         # row 1
-        lbl_supplier_invoice = Label(self.root, text = "Invoice No.", font = ("goudy old style", 15), bg = "white").place(x = 50, y = 150)
-
-        txt_supplier_invoice = Entry(self.root, textvariable = self.var_cust_invoice, font = ("goudy old style", 15), bg = "lightyellow").place(x = 150, y = 150, width = 180)
+        lbl_supplier_invoice = Label(self.root, text = "Invoice No.", font = ("goudy old style", 15), bg = "white").place(x = 50, y = 80)
+        txt_supplier_invoice = Entry(self.root, textvariable = self.var_cust_invoice, font = ("goudy old style", 15), bg = "lightyellow").place(x = 180, y = 80, width = 180)
 
         # row 2
-        lbl_name = Label(self.root, text="Name", font=("goudy old style", 15), bg="white").place(x=50, y=190)
-        txt_name = Entry(self.root, textvariable=self.var_name, font=("goudy old style", 15), bg="lightyellow").place(x=150, y=190, width=180)
+        lbl_name = Label(self.root, text="Name", font=("goudy old style", 15), bg="white").place(x=50, y=120)
+        txt_name = Entry(self.root, textvariable=self.var_name, font=("goudy old style", 15), bg="lightyellow").place(x=180, y=120, width=180)
 
         # row 3
-        lbl_contact = Label(self.root, text="Contact", font=("goudy old style", 15), bg="white").place(x=50, y=230)  
-        txt_contact = Entry(self.root, textvariable=self.var_contact, font=("goudy old style", 15), bg="lightyellow").place(x=150, y=230, width=180)
+        lbl_contact = Label(self.root, text="Contact", font=("goudy old style", 15), bg="white").place(x=50, y=160)  
+        txt_contact = Entry(self.root, textvariable=self.var_contact, font=("goudy old style", 15), bg="lightyellow").place(x=180, y=160, width=180)
         
         # row 4
-        lbl_desc = Label(self.root, text="Description", font=("goudy old style", 15), bg="white").place(x=50, y=270)
+        lbl_desc = Label(self.root, text="Description", font=("goudy old style", 15), bg="white").place(x=50, y=200)
         self.txt_desc = Text(self.root, font=("goudy old style", 15), bg="lightyellow")
-        self.txt_desc.place(x=150, y=270, width=300, height = 60)
+        self.txt_desc.place(x=180, y=200, width=470, height = 90)
 
 
         # buttons
-        btn_add = Button(self.root, text="Save", command = self.add, font=("goudy old style", 15), bg="#2196f3", cursor="hand2", fg="white").place(x=500, y=305, width=110, height=28)
-        btn_update = Button(self.root, command=self.update, text="Update", font=("goudy old style", 15), bg="#4caf50", cursor="hand2", fg="white").place(x=620, y=305, width=110, height=28)
-        btn_delete = Button(self.root, command = self.delete, text="Delete", font=("goudy old style", 15), bg="#f44336", cursor="hand2", fg="white").place(x=740, y=305, width=110, height=28)
-        btn_clear = Button(self.root, command=self.clear, text="Clear", font=("goudy old style", 15), bg="#607d8b", cursor="hand2", fg="white").place(x=860, y=305, width=110, height=28)
+        btn_add = Button(self.root, text="Save", command = self.add, font=("goudy old style", 15), bg="#2196f3", cursor="hand2", fg="white").place(x=180, y=305, width=110, height=28)
+        btn_update = Button(self.root, command=self.update, text="Update", font=("goudy old style", 15), bg="#4caf50", cursor="hand2", fg="white").place(x=300, y=305, width=110, height=28)
+        btn_delete = Button(self.root, command = self.delete, text="Delete", font=("goudy old style", 15), bg="#f44336", cursor="hand2", fg="white").place(x=420, y=305, width=110, height=28)
+        btn_clear = Button(self.root, command=self.clear, text="Clear", font=("goudy old style", 15), bg="#607d8b", cursor="hand2", fg="white").place(x=540, y=305, width=110, height=28)
 
         # Employee Details
         emp_frame = Frame(self.root, bd = 3, relief=RIDGE)
-        emp_frame.place(x = 0, y = 350, relwidth = 1, height = 150)
+        emp_frame.place(x = 700, y = 80, relwidth = 350, height = 350)
 
         scrolly = Scrollbar(emp_frame, orient = VERTICAL)
         scrollx = Scrollbar(emp_frame, orient = HORIZONTAL)
@@ -79,10 +78,10 @@ class customerClass:
         scrolly.pack(side=RIGHT, fill=Y)
         scrollx.config(command=self.customerTable.xview)
         scrolly.config(command=self.customerTable.yview)
-        self.customerTable.heading("invoice", text = "EMP ID")
+        self.customerTable.heading("invoice", text = "Invoice No.")
         self.customerTable.heading("name", text = "Name")
-        self.customerTable.heading("contact", text = "Email")
-        self.customerTable.heading("desc", text = "Gender")
+        self.customerTable.heading("contact", text = "Contact")
+        self.customerTable.heading("desc", text = "Description")
         self.customerTable["show"] = "headings"
 
         self.customerTable.column("invoice", width = 90)

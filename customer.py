@@ -28,15 +28,12 @@ class customerClass:
 
 
         # search Frame
-        SearchFrame = LabelFrame(self.root, text = "Search Employee", font = ("goudy old style", 12, "bold"), bg = "white")
-        # SearchFrame.place(x = 250, y = 20, width = 600, height = 70)
-
         # options
-        lbl_search = Label(SearchFrame, text= "Search By Invoice No", bg = "white", font = ("goudy old style", 15))
-        lbl_search.place(x = 10, y = 10)
+        lbl_search = Label(self.root, text= "Invoice No", bg = "white", font = ("goudy old style", 15))
+        lbl_search.place(x = 700, y = 80)
 
-        txt_search = Entry(SearchFrame, textvariable = self.var_searchtxt, font = ("goudy old style", 15), bg = "lightyellow").place(x = 200, y = 10)
-        btn_search = Button(SearchFrame, command=self.search, text = "Search", font = ("goudy old style", 15), bg = "#4caf50", cursor="hand2", fg="white").place(x = 410, y = 9, width = 150, height = 30)
+        txt_search = Entry(self.root, textvariable = self.var_searchtxt, font = ("goudy old style", 15), bg = "lightyellow").place(x = 800, y = 80, width = 160)
+        btn_search = Button(self.root, command=self.search, text = "Search", font = ("goudy old style", 15), bg = "#4caf50", cursor="hand2", fg="white").place(x = 980, y = 79, width = 100, height = 28)
 
         # title
         title = Label(self.root, text = "Customer Details", font = ("goudy old style", 20, "bold"), bg = "#0f4d7d", fg = "white").place(x = 50, y = 10, width=1000, height=40)
@@ -57,23 +54,23 @@ class customerClass:
         # row 4
         lbl_desc = Label(self.root, text="Description", font=("goudy old style", 15), bg="white").place(x=50, y=200)
         self.txt_desc = Text(self.root, font=("goudy old style", 15), bg="lightyellow")
-        self.txt_desc.place(x=180, y=200, width=470, height = 90)
+        self.txt_desc.place(x=180, y=200, width=470, height = 120)
 
 
         # buttons
-        btn_add = Button(self.root, text="Save", command = self.add, font=("goudy old style", 15), bg="#2196f3", cursor="hand2", fg="white").place(x=180, y=305, width=110, height=28)
-        btn_update = Button(self.root, command=self.update, text="Update", font=("goudy old style", 15), bg="#4caf50", cursor="hand2", fg="white").place(x=300, y=305, width=110, height=28)
-        btn_delete = Button(self.root, command = self.delete, text="Delete", font=("goudy old style", 15), bg="#f44336", cursor="hand2", fg="white").place(x=420, y=305, width=110, height=28)
-        btn_clear = Button(self.root, command=self.clear, text="Clear", font=("goudy old style", 15), bg="#607d8b", cursor="hand2", fg="white").place(x=540, y=305, width=110, height=28)
+        btn_add = Button(self.root, text="Save", command = self.add, font=("goudy old style", 15), bg="#2196f3", cursor="hand2", fg="white").place(x=180, y=370, width=110, height=35)
+        btn_update = Button(self.root, command=self.update, text="Update", font=("goudy old style", 15), bg="#4caf50", cursor="hand2", fg="white").place(x=300, y=370, width=110, height=35)
+        btn_delete = Button(self.root, command = self.delete, text="Delete", font=("goudy old style", 15), bg="#f44336", cursor="hand2", fg="white").place(x=420, y=370, width=110, height=35)
+        btn_clear = Button(self.root, command=self.clear, text="Clear", font=("goudy old style", 15), bg="#607d8b", cursor="hand2", fg="white").place(x=540, y=370, width=110, height=35)
 
         # Employee Details
         emp_frame = Frame(self.root, bd = 3, relief=RIDGE)
-        emp_frame.place(x = 700, y = 80, relwidth = 350, height = 350)
+        emp_frame.place(x = 700, y = 120, width = 380, height = 350)
 
         scrolly = Scrollbar(emp_frame, orient = VERTICAL)
         scrollx = Scrollbar(emp_frame, orient = HORIZONTAL)
 
-        self.customerTable = ttk.Treeview(emp_frame, columns = ("invoice", "name", "contact", "gender", "contact", "desc"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        self.customerTable = ttk.Treeview(emp_frame, columns = ("invoice", "name", "contact", "desc"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
         scrollx.pack(side = BOTTOM, fill = X)
         scrolly.pack(side=RIGHT, fill=Y)
         scrollx.config(command=self.customerTable.xview)
@@ -98,17 +95,17 @@ class customerClass:
         con = sqlite3.connect('win.db')
         cur = con.cursor()
         try:
-            if self.self.var_cust_invoice.get() == "":
+            if self.var_cust_invoice.get() == "":
                 messagebox.showerror("Error", "Invoice must be required", parent = self.root)
             else:
-                cur.execute("Select * from customer where invoice = ?", (self.self.var_cust_invoice.get(),))
+                cur.execute("Select * from customer where invoice = ?", (self.var_cust_invoice.get(),))
                 row = cur.fetchone()
                 if row != None:
                     messagebox.showerror("Error", "This Invoice No. already assigned, try different", parent = self.root)
                 else:
                     cur.execute("Insert into customer(invoice, name, contact, desc) values(?, ?, ?, ?)",
                                 [
-                                    self.self.var_cust_invoice.get(),
+                                    self.var_cust_invoice.get(),
                                     self.var_name.get(),
                                     self.var_contact.get(),
                                     self.txt_desc.get('1.0', END),                                
@@ -135,7 +132,7 @@ class customerClass:
         f = self.customerTable.focus()
         content = (self.customerTable.item(f))
         row = content['values']
-        self.self.var_cust_invoice.set(row[0]),
+        self.var_cust_invoice.set(row[0]),
         self.var_name.set(row[1]),
         self.var_contact.set(row[2]),
         self.txt_desc.delete('1.0', END),
@@ -171,17 +168,17 @@ class customerClass:
         con = sqlite3.connect('win.db')
         cur = con.cursor()
         try:
-            if self.self.var_cust_invoice.get() == "":
+            if self.var_cust_invoice.get() == "":
                 messagebox.showerror("Error", "Invoice No. Must be required", parent=self.root)
             else:
-                cur.execute("Select * from customer where invoice = ?", (self.self.var_cust_invoice.get(),))
+                cur.execute("Select * from customer where invoice = ?", (self.var_cust_invoice.get(),))
                 row = cur.fetchone()
                 if row == None:
                     messagebox.showerror("Error", "Invalid Invoice No.", parent=self.root)
                 else:
                     op = messagebox.askyesno("Confirm", "Do you really want to delete?", parent = self.root)
                     if op == True:
-                        cur.execute("delete from customer where invoice = ?", (self.self.var_cust_invoice.get(),))
+                        cur.execute("delete from customer where invoice = ?", (self.var_cust_invoice.get(),))
                         con.commit()
                         messagebox.showinfo("Delete", "customer Deleted Successfully")
                         self.clear()
@@ -190,7 +187,7 @@ class customerClass:
 
     def clear(self):
 
-        self.self.var_cust_invoice.set(""),
+        self.var_cust_invoice.set(""),
         self.var_name.set(""),
         self.var_contact.set(""),
         self.txt_desc.delete('1.0', END),

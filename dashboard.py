@@ -8,7 +8,7 @@ from PIL import ImageTk
 
 from employee import employeeClass
 
-from customer import projectClass
+from customer import customerClass
 
 class IMS:
     def __init__(self, root):

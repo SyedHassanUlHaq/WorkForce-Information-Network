@@ -49,7 +49,7 @@ class IMS:
         btn_employee = Button(LeftMenu, text = "Employee", command= self.employee, image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_customer = Button(LeftMenu, command = self.customer, text = "Customer", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_category = Button(LeftMenu, command = self.category, text = "Category", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
-        btn_project = Button(LeftMenu, command = self.project, text = "Product", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
+        btn_project = Button(LeftMenu, command = self.project, text = "Project", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_sales = Button(LeftMenu,command=self.sales, text = "Sales", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_exit = Button(LeftMenu, text = "Exit", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
 

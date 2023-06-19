@@ -19,10 +19,12 @@ class projectClass:
         self.var_searchby = StringVar()
         self.var_searchtxt = StringVar()
 
+        self.var_pid = StringVar()
         self.var_cat = StringVar()
         self.var_cust = StringVar()
         self.cat_list = []
         self.cust_list = []
+        self.fetch_cat_cust()
         self.var_name = StringVar()
         self.var_stipend = StringVar()
         self.var_length = StringVar()
@@ -49,7 +51,7 @@ class projectClass:
         cmb_cat.place(x = 150, y = 60, width = 200)
         cmb_cat.current(0)
 
-        cmb_cust = ttk.Combobox(project_Frame, textvariable= self.var_cust, values = ("Select"), state = 'readonly', justify = CENTER, font = ("goudy old style", 15))
+        cmb_cust = ttk.Combobox(project_Frame, textvariable= self.var_cust, values = self.cust_list, state = 'readonly', justify = CENTER, font = ("goudy old style", 15))
         cmb_cust.place(x = 150, y = 110, width = 200)
         cmb_cust.current(0)
 
@@ -59,7 +61,7 @@ class projectClass:
 
         cmb_status = ttk.Combobox(project_Frame, textvariable= self.var_status, values = ("Active", "Inactive"), state = 'readonly', justify = CENTER, font = ("goudy old style", 15))
         cmb_status.place(x = 150, y = 310, width = 200)
-        cmb_cust.current(0)
+        cmb_status.current(0)
 
         # buttons
         btn_add = Button(project_Frame, text="Save", command = self.add, font=("goudy old style", 15), bg="#2196f3", cursor="hand2", fg="white").place(x=10, y=400, width=100, height=40)
@@ -108,20 +110,30 @@ class projectClass:
         self.project_table.pack(fill = BOTH, expand = 1)
         self.project_table.bind("<ButtonRelease-1>", self.get_data)
         self.show()
-        self.fetch_cat_cust
+        
 
     def fetch_cat_cust(self):
+        self.cat_list.append("Empty")
+        self.cust_list.append("Empty")
         con = sqlite3.connect(database = r'win.db')
         cur = con.cursor()
         try:
             cur.execute("select name from category")
             cat = cur.fetchall()
-            cat_list = []
-            for i in cat:
-                cat_list.append(i[0])
+            if len(cat) > 0:
+                del self.cat_list[:]
+                self.cat_list.append("Select")
+                for i in cat:
+                    self.cat_list.append(i[0])
 
             cur.execute("select name from customer")
-            cat = cur.fetchall
+            cust = cur.fetchall()
+            if len(cust) > 0:
+                del self.cust_list[:]
+                self.cust_list.append("Select")
+                for i in cust:
+                    self.cust_list.append(i[0])
+
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
 
@@ -129,7 +141,7 @@ class projectClass:
         con = sqlite3.connect('win.db')
         cur = con.cursor()
         try:
-            if self.var_cat.get() == "Select" or self.var_cust.get() == "Select" or self.var_name.get() == "":
+            if self.var_cat.get() == "Select" or self.var_cat.get() == "Empty" or self.var_cust.get() == "Select" or self.var_name.get() == "":
                 messagebox.showerror("Error", "All Fields are be required", parent = self.root)
             else:
                 cur.execute("Select * from project where name = ?", (self.var_name.get(),))
@@ -137,7 +149,7 @@ class projectClass:
                 if row != None:
                     messagebox.showerror("Error", "Project already present, try different", parent = self.root)
                 else:
-                    cur.execute("Insert into project(Category, Customer, name, stipend, length, status) values(?, ?, ?, ?, ?, ?)",
+                    cur.execute("Insert into project(Customer, Category, name, stipend, length, status) values(?, ?, ?, ?, ?, ?)",
                                 [
                                     self.var_cat.get(),
                                     self.var_cust.get(),
@@ -167,51 +179,39 @@ class projectClass:
         f = self.project_table.focus()
         content = (self.project_table.item(f))
         row = content['values']
-        self.var_emp_id.set(row[0]),
-        self.var_name.set(row[1]),
-        self.var_email.set(row[2]),
-        self.var_gender.set(row[3]),
-        self.var_contact.set(row[4]),
-
-        self.var_dob.set(row[5]),
-        self.var_doj.set(row[6]),
-
-        self.var_pass.set(row[7]),
-        self.var_utype.set(row[8]),
-        self.txt_address.delete('1.0', END),
-        self.txt_address.insert(END, row[9]),
-        self.var_salary.set(row[10])
-
+        self.var_pid.get(0),
+        self.var_cat.get(1),
+        self.var_cust.get(2),
+        self.var_name.get(3),
+        self.var_stipend.get(4),
+        self.var_length.get(5),
+        self.var_status.get(6),
+                                
+        
     def update(self):
         con = sqlite3.connect('win.db')
         cur = con.cursor()
         try:
-            if self.var_emp_id.get() == "":
-                messagebox.showerror("Error", "Employee ID Must be required", parent = self.root)
+            if self.var_pid.get() == "":
+                messagebox.showerror("Error", "Please Select project from list", parent = self.root)
             else:
-                cur.execute("Select * from employee where eid = ?", (self.var_emp_id.get(),))
+                cur.execute("Select * from project where pid = ?", (self.var_emp_id.get(),))
                 row = cur.fetchone()
                 if row == None:
-                    messagebox.showerror("Error", "Invalid Employee ID", parent = self.root)
+                    messagebox.showerror("Error", "Invalid project ID", parent = self.root)
                 else:
-                    cur.execute("Update employee set name = ?, email = ?, gender = ?, contact = ?, dob = ?, doj = ?, pass = ?, utype = ?, address = ?, salary = ? where eid = ?",
+                    cur.execute("Update project set Category = ?, customer = ?, name = ?, stipend = ?, length = ?, status = ? where pid = ?",
                                 [
+                                    self.var_cat.get(),
+                                    self.var_cust.get(),
                                     self.var_name.get(),
-                                    self.var_email.get(),
-                                    self.var_gender.get(),
-                                    self.var_contact.get(),
-
-                                    self.var_dob.get(),
-                                    self.var_doj.get(),
-
-                                    self.var_pass.get(),
-                                    self.var_utype.get(),
-                                    self.txt_address.get('1.0', END),
-                                    self.var_salary.get(),
-                                    self.var_emp_id.get()
+                                    self.var_stipend.get(),
+                                    self.var_length.get(),
+                                    self.var_status.get(),
+                                    self.var_pid.get()
                                 ])
                     con.commit()
-                    messagebox.showinfo("Success", "Employee Updated Successfully", parent = self.root)
+                    messagebox.showinfo("Success", "Project Updated Successfully", parent = self.root)
                     self.show()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
@@ -220,38 +220,31 @@ class projectClass:
         con = sqlite3.connect('win.db')
         cur = con.cursor()
         try:
-            if self.var_emp_id.get() == "":
-                messagebox.showerror("Error", "Employee ID Must be required", parent=self.root)
+            if self.var_pid.get() == "":
+                messagebox.showerror("Error", "Select Project from list", parent=self.root)
             else:
-                cur.execute("Select * from employee where eid = ?", (self.var_emp_id.get(),))
+                cur.execute("Select * from project where eid = ?", (self.var_emp_id.get(),))
                 row = cur.fetchone()
                 if row == None:
-                    messagebox.showerror("Error", "Invalid Employee ID", parent=self.root)
+                    messagebox.showerror("Error", "Invalid Project", parent=self.root)
                 else:
                     op = messagebox.askyesno("Confirm", "Do you really want to delete?", parent = self.root)
                     if op == True:
-                        cur.execute("delete from employee where eid = ?", (self.var_emp_id.get(),))
+                        cur.execute("delete from project where pid = ?", (self.var_pid.get(),))
                         con.commit()
-                        messagebox.showinfo("Delete", "Employee Deleted Successfully")
+                        messagebox.showinfo("Delete", "Project Deleted Successfully")
                         self.clear()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
 
     def clear(self):
-
-        self.var_emp_id.set(""),
+        self.var_cat.set("Select"),
+        self.var_cust.set("Select"),
         self.var_name.set(""),
-        self.var_email.set(""),
-        self.var_gender.set("Select"),
-        self.var_contact.set(""),
-
-        self.var_dob.set(""),
-        self.var_doj.set(""),
-
-        self.var_pass.set(""),
-        self.var_utype.set("Admin"),
-        self.txt_address.delete('1.0', END),
-        self.var_salary.set("")
+        self.var_stipend.set("Select"),
+        self.var_length.set(""),
+        self.var_status.set("Active"),
+        self.var_pid.set(""),
         self.var_searchtxt.set("")
         self.var_searchby.set("Select")
         self.show()
@@ -265,7 +258,7 @@ class projectClass:
             elif self.var_searchtxt.get() == "":
                 messagebox.showerror("Error", "Search Input is Required", parent = self.root)
             else:
-                cur.execute("select * from employee where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
+                cur.execute("select * from project where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
                 rows = cur.fetchall()
                 if len(rows) != 0:
                     self.project_table.delete(*self.project_table.get_children())

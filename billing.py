@@ -133,7 +133,7 @@ class BillClass:
         self.var_status = StringVar()
 
         Add_CartWidgetsFrame = Frame(self.root, bd = 2, relief=RIDGE, bg = "white")
-        cal_cart_Frame.place(x=420, y=550, width=530, height=110)
+        Add_CartWidgetsFrame.place(x=420, y=550, width=530, height=110)
 
         lbl_p_name = Label(Add_CartWidgetsFrame, text = "Product Name", font = ("times new roman", 15), bg = "white").place(x = 5, y = 5)
         txt_p_name = Entry(Add_CartWidgetsFrame, textvariable=self.var_pname, font = ("times new roman", 15), bg = "lightyellow", state = "readonly").place(x = 5, y = 35, width = 190, height = 22)
@@ -148,9 +148,43 @@ class BillClass:
         self.lbl_status.place(x = 5, y = 70)
 
         btn_clear_cart = Button(Add_CartWidgetsFrame, text = "Clear", font = ("times new roman", 15, "bold"), bg = "lightyellow", cursor = "hand2").place(x = 180, y = 70, width=150, height=30)
-        btn_clear_cart = Button(Add_CartWidgetsFrame, text = "Add | Update Cart", font = ("times new roman", 15, "bold"), bg = "orange", cursor = "hand2").place(x = 340, y = 70, width=180, height=30)
-        
+        btn_add_cart = Button(Add_CartWidgetsFrame, text = "Add | Update Cart", font = ("times new roman", 15, "bold"), bg = "orange", cursor = "hand2").place(x = 340, y = 70, width=180, height=30)
 
+        # Calculator Frame
+        self.var_cal_input = StringVar()
+
+        cal_Frame = Frame(cal_cart_Frame, bd = 9, relief = RIDGE, bg = "white")
+        cal_Frame.place(x = 5, y = 10, width = 268, height = 340)
+
+        txt_cal_input = Entry(cal_Frame, textvariable= self.var_cal_input, font= ('arial', 15, 'bold'), width=21, bd = 10, relief=GROOVE, state='readonly')
+        txt_cal_input.grid(row = 0, columnspan = 4)
+
+        btn_7 = Button(cal_Frame, command = lambda:self.get_input(7), text = '7', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 1, column = 0)
+        btn_8 = Button(cal_Frame, command = lambda:self.get_input(8) ,text = '8', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 1, column = 1)
+        btn_9 = Button(cal_Frame, command = lambda:self.get_input(9), text = '9', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 1, column = 2)
+        btn_sum = Button(cal_Frame, command = lambda:self.get_input('+'), text = '+', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 1, column = 3)
+
+        btn_4 = Button(cal_Frame, command = lambda:self.get_input(4), text = '4', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 2, column = 0)
+        btn_5 = Button(cal_Frame, command = lambda:self.get_input(5), text = '5', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 2, column = 1)
+        btn_6 = Button(cal_Frame, command = lambda:self.get_input(6), text = '6', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 2, column = 2)
+        btn_sub = Button(cal_Frame, command = lambda:self.get_input('-'), text = '-', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 2, column = 3)
+
+        btn_1 = Button(cal_Frame, command = lambda:self.get_input(1), text = '1', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 3, column = 0)
+        btn_2 = Button(cal_Frame, command = lambda:self.get_input(2), text = '2', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 3, column = 1)
+        btn_3 = Button(cal_Frame, command = lambda:self.get_input(3), text = '3', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 3, column = 2)
+        btn_sum = Button(cal_Frame, command = lambda:self.get_input('*'), text = '*', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 10, cursor="hand2").grid(row = 3, column = 3)
+
+        btn_0 = Button(cal_Frame, command = lambda:self.get_input(0), text = '0', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 15, cursor="hand2").grid(row = 4, column = 0)
+        btn_c = Button(cal_Frame, text = 'C', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 15, cursor="hand2").grid(row = 4, column = 1)
+        btn_eq = Button(cal_Frame, text = '=', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 15, cursor="hand2").grid(row = 4, column = 2)
+        btn_div = Button(cal_Frame, command = lambda:self.get_input('/'), text = '/', font = ('arial', 15, 'bold'), bd = 5, width = 4, pady = 15, cursor="hand2").grid(row = 4, column = 3)
+
+
+        # Functions
+    def get_input(self, num):
+        xnum = self.var_cal_input.get()+str(num)
+        self.var_cal_input.set(num)
+ 
 
 if __name__=="__main__":
     root = Tk()

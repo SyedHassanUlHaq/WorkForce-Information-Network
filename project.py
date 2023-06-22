@@ -163,6 +163,7 @@ class projectClass:
                     self.show()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
+    
     def show(self):
         con = sqlite3.connect(database='win.db')
         cur = con.cursor()
@@ -180,8 +181,8 @@ class projectClass:
         content = (self.project_table.item(f))
         row = content['values']
         self.var_pid.get(0),
-        self.var_cat.get(1),
-        self.var_cust.get(2),
+        self.var_cust.get(1)
+        self.var_cat.get(2),
         self.var_name.get(3),
         self.var_stipend.get(4),
         self.var_length.get(5),

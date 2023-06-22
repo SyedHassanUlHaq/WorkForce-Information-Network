@@ -8,7 +8,7 @@ from PIL import ImageTk
 
 from tkinter import messagebox
 
-
+import sqlite3
 
 class BillClass:
     def __init__(self, root):
@@ -48,8 +48,8 @@ class BillClass:
         lbl_search = Label(projectFrame2, text="Project Name", font = ("times new roman", 15, "bold"), bg = "white").place(x = 2, y = 45)
 
         txt_search = Entry(projectFrame2, textvariable=self.var_search, font = ("times new roman", 15), bg = "lightyellow").place(x = 128, y = 47, width = 150, height=22)
-        btn_search = Button(projectFrame2, text="search", font = ("goudy old style", 15), bg = "#2196f3", fg = "white", cursor="hand2").place(x=285, y=45, width = 100, height=25)
-        btn_show_all = Button(projectFrame2, text="Show All", font = ("goudy old style", 15), bg = "#083531", fg = "white", cursor="hand2").place(x=285, y=10, width = 100, height=25)
+        btn_search = Button(projectFrame2, command = self.search, text="search", font = ("goudy old style", 15), bg = "#2196f3", fg = "white", cursor="hand2").place(x=285, y=45, width = 100, height=25)
+        btn_show_all = Button(projectFrame2, command = self.show, text="Show All", font = ("goudy old style", 15), bg = "#083531", fg = "white", cursor="hand2").place(x=285, y=10, width = 100, height=25)
 
         # Project Detail Frame
         projectFrame3 = Frame(projectFrame1, bd = 3, relief=RIDGE)
@@ -70,13 +70,13 @@ class BillClass:
         self.project_Table.heading("status", text = "Status")
         self.project_Table["show"] = "headings"
 
-        self.project_Table.column("pid", width = 90)
+        self.project_Table.column("pid", width = 40)
         self.project_Table.column("name", width = 100)
         self.project_Table.column("stipend", width = 100)
-        self.project_Table.column("length", width = 100)
-        self.project_Table.column("status", width = 100)
+        self.project_Table.column("length", width = 40)
+        self.project_Table.column("status", width = 90)
         self.project_Table.pack(fill = BOTH, expand = 1)
-        # self.project_Table.bind("<ButtonRelease-1>", self.get_data)
+        self.project_Table.bind("<ButtonRelease-1>", self.get_data)
         lbl_notes = Label(projectFrame1, text="Note:'Enter 0 Quantity to remove product from the Cart'", font=("goudy old style", 12), anchor = 'w', bg = "white", fg = "red").pack(side = BOTTOM, fill = X)
 
         # customer frame
@@ -175,7 +175,7 @@ class BillClass:
         lbl_p_qty = Label(Add_CartWidgetsFrame, text = "Quantity", font = ("times new roman", 15), bg = "white").place(x = 390, y = 5)
         txt_p_qty = Entry(Add_CartWidgetsFrame, textvariable=self.var_qty, font = ("times new roman", 15), bg = "lightyellow").place(x = 390, y = 35, width = 120, height = 22)
 
-        self.lbl_status = Label(Add_CartWidgetsFrame, text = "In Hand [9999]", font = ("times new roman", 15), bg = "white")
+        self.lbl_status = Label(Add_CartWidgetsFrame, text = "In Hand", font = ("times new roman", 15), bg = "white")
         self.lbl_status.place(x = 5, y = 70)
 
         btn_clear_cart = Button(Add_CartWidgetsFrame, text = "Clear", font = ("times new roman", 15, "bold"), bg = "lightyellow", cursor = "hand2").place(x = 180, y = 70, width=150, height=30)
@@ -187,7 +187,7 @@ class BillClass:
         billFrame = Frame(self.root, bd = 2, relief = RIDGE, bg = "white")
         billFrame.place(x = 953, y = 110, width = 410, height = 410)
 
-        pTitle = Label(billFrame, text="Customer Bill Area", font = ("goudy old style", 20, "bold"), bg = "#262626", fg = "white").pack(side = TOP, fill = X)
+        BTitle = Label(billFrame, text="Customer Bill Area", font = ("goudy old style", 20, "bold"), bg = "#f44336", fg = "white").pack(side = TOP, fill = X)
         scrolly = Scrollbar(billFrame, orient = VERTICAL)
         scrolly.pack(side = RIGHT, fill = Y)
 
@@ -218,6 +218,8 @@ class BillClass:
         btn_generate.place(x = 246, y = 80, width = 160, height = 50)
 
         footer = Label(self.root, text = "WIN-Workforce Information Network | Developed By Rangesh\nFor any Technical Issue contact: 03320208649", font = ("times new roman", 11), bg = "#4d636d", fg = "white").pack(side = BOTTOM, fill = X)
+        self.show()
+
 
         # Functions
     def get_input(self, num):
@@ -231,6 +233,49 @@ class BillClass:
     def perform_cal(self):
         result = self.var_cal_input.get()
         self.var_cal_input.set(eval(result))
+
+    def show(self):
+        con = sqlite3.connect(database='win.db')
+        cur = con.cursor()
+        try:
+            # self.project_Table = ttk.Treeview(projectFrame3, columns = ("pid", "name", "stipend", "length", "status"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+            cur.execute("select pid, name, stipend, length, status from project")
+            rows = cur.fetchall()
+            self.project_Table.delete(*self.project_Table.get_children())
+            for row in rows:
+                self.project_Table.insert('',END,values = row)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
+
+    def search(self):
+        con = sqlite3.connect(database='win.db')
+        cur = con.cursor()
+        try:
+            if self.var_search.get() == "":
+                messagebox.showerror("Error", "Search Input is Required", parent = self.root)
+            else:
+                cur.execute("select pid, name, stipend, length, status from project where name LIKE '%"+self.var_search.get()+"%'")
+                rows = cur.fetchall()
+                if len(rows) != 0:
+                    self.project_Table.delete(*self.project_Table.get_children())
+                    for row in rows:
+                        self.project_Table.insert('', END, values=row)
+                else:
+                    messagebox.showerror("Error", "No record found !!")
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
+
+    def get_data(self, ev):
+        f = self.project_Table.focus()
+        content = (self.project_Table.item(f))
+        row = content['values']
+        self.var_pid.get(row[0]),
+        self.var_pname.get(row[1]),
+        self.var_stipend.get(row[3]),
+        self.lbl_status.config(text = f"In Stock [{str(row[2])}]"),
+
+
+
 
 if __name__=="__main__":
     root = Tk()

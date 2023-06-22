@@ -70,7 +70,7 @@ class IMS:
         self.lbl_sales.place(x=650, y=300, height=150, width=300)
 
         # footer
-        lbl_footer = Label(self.root, text="Workforce Information Network | Deeveloped by Hafsa, Hassan and omer\n For any Issue Contact: +92 3320208649",font=("times new roman", 15), bg="#4d636d", fg="white").pack(side = BOTTOM, fill = X)
+        lbl_footer = Label(self.root, text="Workforce Information Network | Developed by Hafsa, Hassan and omer\n For any Issue Contact: +92 3320208649",font=("times new roman", 15), bg="#4d636d", fg="white").pack(side = BOTTOM, fill = X)
 
     def employee(self):
         self.new_win = Toplevel(self.root)

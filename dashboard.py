@@ -1,6 +1,9 @@
 from tkinter import *
+from tkinter import messagebox
 
 from PIL import Image
+
+import time
 
 from tkinter import ttk
 
@@ -15,6 +18,11 @@ from category import categoryClass
 from project import projectClass
 
 from sales import salesClass
+
+import sqlite3
+
+import os
+
 class IMS:
     def __init__(self, root):
         self.root = root
@@ -72,6 +80,8 @@ class IMS:
         # footer
         lbl_footer = Label(self.root, text="Workforce Information Network | Developed by Hafsa, Hassan and omer\n For any Issue Contact: +92 3320208649",font=("times new roman", 15), bg="#4d636d", fg="white").pack(side = BOTTOM, fill = X)
 
+        self.update_content()
+
     def employee(self):
         self.new_win = Toplevel(self.root)
         self.new_obj = employeeClass(self.new_win)
@@ -92,6 +102,33 @@ class IMS:
         self.new_win = Toplevel(self.root)
         self.new_obj = salesClass(self.new_win)
 
+    def update_content(self):
+        con = sqlite3.connect(database=r'win.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select * from project")
+            project = cur.fetchall()
+            self.lbl_product.config(text = f'Total Project\n[{str(len(project))}]')
+
+            cur.execute("select * from customer")
+            customer = cur.fetchall()
+            self.lbl_supplier.config(text = f'Total customers\n[{str(len(customer))}]')
+
+            cur.execute("select * from category")
+            category = cur.fetchall()
+            self.lbl_category.config(text = f'Total Category\n[{str(len(category))}]')
+
+            cur.execute("select * from employee")
+            employee = cur.fetchall()
+            self.lbl_employee.config(text = f'Total Employee\n[{str(len(employee))}]')
+            bill = len(os.listdir('bill'))
+            self.lbl_sales.config(text = f'Total Sales [{str(bill)}]')
+            time = time.strftime("%I:%M:%S")
+            date = time.strftime("%d-%m-%Y")
+            self.lbl_clock.config(text = "Welcome to Workforce Information Network \t\t Date: {str(date_)}\t\t Time: {str(time_)}")
+            self.lbl_clock.after(200, self.update_content)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
 
 if __name__=="__main__":
     root = Tk()

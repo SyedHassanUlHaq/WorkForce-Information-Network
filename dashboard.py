@@ -35,7 +35,7 @@ class IMS:
         title = Label(self.root, text = "Workforce Information Network", image = self.icon_title, compound = LEFT, font = ("times new roman", 40, "bold"), bg = "#010c48", fg = "white", anchor = "w", padx = 20).place(x = 0, y = 0, relwidth = 2, height = 70)
 
         # button_logout
-        btn_logout = Button(self.root, text = "Logout", font = ("times new roman", 15, "bold"), bg = "yellow", cursor = "hand2").place(x = 1150, y = 10, height = 50, width = 150)
+        btn_logout = Button(self.root, command = self.logout, text = "Logout", font = ("times new roman", 15, "bold"), bg = "yellow", cursor = "hand2").place(x = 1150, y = 10, height = 50, width = 150)
 
         # clock
         self.lbl_clock = Label(self.root, text = "Welcome to Workforce Information Network \t\t Date: DD-MM-YYYY \t\t Time: HH:MM:SS", font = ("times new roman", 15), bg = "#4d636d", fg = "white")
@@ -129,6 +129,10 @@ class IMS:
             self.lbl_clock.after(200, self.update_content)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
+
+    def logout(self):
+        self.root.destroy()
+        os.system("python login.py")
 
 if __name__=="__main__":
     root = Tk()

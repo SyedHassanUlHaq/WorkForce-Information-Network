@@ -4,7 +4,7 @@ from tkinter import messagebox
 
 from PIL import Image
 
-import time
+from datetime import date, datetime
 
 from tkinter import ttk
 
@@ -24,8 +24,6 @@ import sqlite3
 
 import os
 
-from datetime import date
-
 class IMS:
     def __init__(self, root):
         self.root = root
@@ -41,10 +39,10 @@ class IMS:
         btn_logout = Button(self.root, command = self.logout, text = "Logout", font = ("times new roman", 15, "bold"), bg = "yellow", cursor = "hand2").place(x = 1150, y = 10, height = 50, width = 150)
 
         # clock
-        current_time = time.strftime("%H:%M")
-        self.lbl_clock = Label(root, text=f"Welcome to Workforce Information Network \t\t Date: {date.today()} \t\t Time: {current_time}", font=("times new roman", 15), bg="#4d636d", fg="white")
-        self.lbl_clock.place(x = 0, y = 70, relwidth = 1, height = 30)
-
+        current_date = date.today()
+        current_time = datetime.now().strftime("%H:%M:%S")
+        self.lbl_clock = Label(root, text=f"Welcome to Workforce Information Network \t\t Date: {current_date} \t\tTime: {current_time}", font=("times new roman", 15), bg="#4d636d", fg="white")
+        self.lbl_clock.place(x=0, y=70, relwidth=1, height=30)
         # Left Menu
         self.MenuLogo = Image.open(r"images\menu_im.png")
         self.MenuLogo = self.MenuLogo.resize((200, 200), Image.LANCZOS)

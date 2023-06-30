@@ -76,7 +76,7 @@ class Login_System:
             if self.employee_id.get() == "" or self.password.get() == "":
                 messagebox.showerror('Error', "All fields are required", parent = self.root)
             else:
-                cur.execute("select utype from employee where eid = ? and pass = ?", self.employee_id.get(), self.password.get())
+                cur.execute("select utype from employee where eid = ? and pass = ?", (self.employee_id.get(), self.password.get()))
                 user = cur.fetchone()
                 if user == None:
                     messagebox.showerror('Error', "Invalid USERNAME/PASSWORD", parent = self.root)

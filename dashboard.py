@@ -1,3 +1,5 @@
+import time
+
 from tkinter import *
 
 from tkinter import messagebox
@@ -40,7 +42,7 @@ class IMS:
 
         # clock
         current_date = date.today()
-        current_time = datetime.now().strftime("%H:%M:%S")
+        current_time = datetime.now().strftime("%I:%M:%S %p")
         self.lbl_clock = Label(root, text=f"Welcome to Workforce Information Network \t\t Date: {current_date} \t\tTime: {current_time}", font=("times new roman", 15), bg="#4d636d", fg="white")
         self.lbl_clock.place(x=0, y=70, relwidth=1, height=30)
         # Left Menu
@@ -125,9 +127,9 @@ class IMS:
             self.lbl_employee.config(text = f'Total Employee\n[{str(len(employee))}]')
             bill = len(os.listdir('bill'))
             self.lbl_sales.config(text = f'Total Sales [{str(bill)}]')
-            time = time.strftime("%I:%M:%S")
-            date = time.strftime("%d-%m-%Y")
-            self.lbl_clock.config(text = "Welcome to Workforce Information Network \t\t Date: {str(date_)}\t\t Time: {str(time_)}")
+            current_time = datetime.now().strftime("%I:%M:%S %p")
+            current_date = time.strftime("%d-%m-%Y")
+            self.lbl_clock.config(text = f"Welcome to Workforce Information Network \t\t Date: {current_date}\t\t Time: {current_time}")
             self.lbl_clock.after(200, self.update_content)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)

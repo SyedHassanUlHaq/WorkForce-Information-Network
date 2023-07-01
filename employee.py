@@ -252,7 +252,7 @@ class employeeClass:
                         cur.execute("delete from employee where eid = ?", (self.var_emp_id.get(),))
                         con.commit()
                         messagebox.showinfo("Delete", "Employee Deleted Successfully")
-                        self.clear()
+                        self.show()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
 

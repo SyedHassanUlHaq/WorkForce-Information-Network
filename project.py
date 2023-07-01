@@ -78,6 +78,10 @@ class projectClass:
         cmb_search.place(x = 10, y = 10, width = 180)
         cmb_search.current(0)
 
+        txt_search = Entry(SearchFrame, textvariable = self.var_searchtxt, font = ("goudy old style", 15), bg = "lightyellow").place(x = 220, y = 10)
+        btn_search = Button(SearchFrame, command=self.search, text = "Search", font = ("goudy old style", 15), bg = "#4caf50", cursor="hand2", fg="white").place(x = 460, y = 9, width = 100, height = 30)
+
+
         # project Details
         p_frame = Frame(self.root, bd = 3, relief=RIDGE)
         p_frame.place(x = 480, y = 100, width = 600, height = 390)
@@ -85,7 +89,7 @@ class projectClass:
         scrolly = Scrollbar(p_frame, orient = VERTICAL)
         scrollx = Scrollbar(p_frame, orient = HORIZONTAL)
 
-        self.project_table = ttk.Treeview(p_frame, columns = ("pid", "Category", "Customer", "name", "stipend", "length", "status"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        self.project_table = ttk.Treeview(p_frame, columns = ("pid", "Customer", "Category", "name", "stipend", "length", "status"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
         scrollx.pack(side = BOTTOM, fill = X)
         scrolly.pack(side=RIGHT, fill=Y)
         scrollx.config(command=self.project_table.xview)
@@ -180,14 +184,14 @@ class projectClass:
         f = self.project_table.focus()
         content = (self.project_table.item(f))
         row = content['values']
-        self.var_pid.get(0),
-        self.var_cust.get(1)
-        self.var_cat.get(2),
-        self.var_name.get(3),
-        self.var_stipend.get(4),
-        self.var_length.get(5),
-        self.var_status.get(6),
-                                
+        self.var_pid.set(row[0]),
+        self.var_cust.set(row[1])
+        self.var_cat.set(row[2]),
+        self.var_name.set(row[3]),
+        self.var_stipend.set(row[4]),
+        self.var_length.set(row[5]),
+        self.var_status.set(row[6]),
+                            
         
     def update(self):
         con = sqlite3.connect('win.db')
@@ -196,7 +200,7 @@ class projectClass:
             if self.var_pid.get() == "":
                 messagebox.showerror("Error", "Please Select project from list", parent = self.root)
             else:
-                cur.execute("Select * from project where pid = ?", (self.var_emp_id.get(),))
+                cur.execute("Select * from project where pid = ?", (self.var_pid.get(),))
                 row = cur.fetchone()
                 if row == None:
                     messagebox.showerror("Error", "Invalid project ID", parent = self.root)
@@ -224,7 +228,7 @@ class projectClass:
             if self.var_pid.get() == "":
                 messagebox.showerror("Error", "Select Project from list", parent=self.root)
             else:
-                cur.execute("Select * from project where eid = ?", (self.var_emp_id.get(),))
+                cur.execute("Select * from project where pid = ?", (self.var_pid.get(),))
                 row = cur.fetchone()
                 if row == None:
                     messagebox.showerror("Error", "Invalid Project", parent=self.root)

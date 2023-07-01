@@ -127,8 +127,8 @@ class categoryClass:
                         con.commit()
                         messagebox.showinfo("Delete", "category Deleted Successfully")
                         self.show()
-                        self.var_cat_id.set("")
-                        self.var_name.set("")
+                        # self.var_cat_id.set("")
+                        # self.var_name.set("")
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
 

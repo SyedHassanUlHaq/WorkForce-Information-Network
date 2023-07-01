@@ -142,10 +142,10 @@ class customerClass:
         con = sqlite3.connect('win.db')
         cur = con.cursor()
         try:
-            if self.self.var_cust_invoice.get() == "":
+            if self.var_cust_invoice.get() == "":
                 messagebox.showerror("Error", "Invoice No. must be required", parent = self.root)
             else:
-                cur.execute("Select * from customer where invoice = ?", (self.self.var_cust_invoice.get(),))
+                cur.execute("Select * from customer where invoice = ?", (self.var_cust_invoice.get(),))
                 row = cur.fetchone()
                 if row == None:
                     messagebox.showerror("Error", "Invalid Invoice No.", parent = self.root)
@@ -153,10 +153,9 @@ class customerClass:
                     cur.execute("Update customer set name = ?, contact = ?, desc = ? where invoice = ?",
                                 [
                                     self.var_name.get(),
-                                    self.var_email.get(),
                                     self.var_contact.get(),
                                     self.txt_desc.get('1.0', END),
-                                    self.self.var_cust_invoice.get()
+                                    self.var_cust_invoice.get()
                                 ])
                     con.commit()
                     messagebox.showinfo("Success", "Customer Updated Successfully", parent = self.root)
@@ -191,7 +190,6 @@ class customerClass:
         self.var_name.set(""),
         self.var_contact.set(""),
         self.txt_desc.delete('1.0', END),
-        self.var_salary.set("")
         self.var_searchtxt.set("")
         self.show()
 
@@ -210,7 +208,7 @@ class customerClass:
                 else:
                     messagebox.showerror("Error", "No record found !!")
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
+            messagebox.showerror("Error",f"Error due to : {str(ex)}", parent=self.root)
 
 
 if __name__=="__main__":

@@ -279,7 +279,7 @@ class BillClass:
         self.var_pname.set(row[1])
         self.var_stipend.set(row[2])
         self.var_length.set(row[3])
-        self.lbl_status.config(text = f"In Stock [{str(row[3])}]")
+        self.lbl_status.config(text = f"In Hand [{str(row[3])}]")
         self.var_status.set(row[4])
         
     def add_update_cart(self):
@@ -295,15 +295,13 @@ class BillClass:
         if self.var_pid.get() == '':
             messagebox.showerror('Error', "Please Select Projet from the list", parent = self.root)
         elif self.var_length.get() == '':
-            messagebox.showerror('Error', "Quatity is Required", parent = self.root)
-        elif self.var_length.get() == '':
-            messagebox.showerror('Error', "Quantity is Required", parent = self.root)
+            messagebox.showerror('Error', "Project Length is Required", parent = self.root)
         else:
             # price_cal = int(self.var_length.get())*float(self.var_stipend.get())
             # price_cal = float(price_cal)
             price_cal = self.var_stipend.get()
             cart_data = [self.var_pid.get(), self.var_pname.get(), price_cal, self.var_length.get(), self.var_status.get]
-            
+            # update cart
             present = 'no'
             index_ = 0
             for row in self.cart_list:
@@ -312,7 +310,7 @@ class BillClass:
                     break
                 index_ += 1
             if present == 'yes':
-                op = messagebox.askyesno('confirm', "Produc already present\nDo you want to Update | Remove from the Cart List", parent = self.root)
+                op = messagebox.askyesno('confirm', "Project already present\nDo you want to Update | Remove from the Cart List", parent = self.root)
                 if op == True:
                     if self.var_length.get() == "0":
                         self.cart_list.pop(index_)
@@ -381,7 +379,7 @@ class BillClass:
         self.net_pay = self.bill_amnt - self.discount
         self.lbl_amnt.config(text=f'Bill Amnt\n{str(self.bill_amnt)}')
         self.lbl_net_pay.config(text=f'Net Pay\n{str(self.net_pay)}')
-        self.cartTitle.config(text = f"Cart \t Total Product: [{str(len(self.cart_list))}]")
+        self.cartTitle.config(text = f"Cart \t Total Projects: [{str(len(self.cart_list))}]")
 
     def show_cart(self):
         try:

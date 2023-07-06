@@ -16,6 +16,8 @@ import os
 
 import tempfile
 
+from datetime import date, datetime
+
 class BillClass:
     def __init__(self, root):
         self.root = root
@@ -33,8 +35,10 @@ class BillClass:
         btn_logout = Button(self.root, command = self.logout, text = "Logout", font = ("times new roman", 15, "bold"), bg = "yellow", cursor = "hand2").place(x = 1150, y = 10, height = 50, width = 150)
 
         # clock
-        self.lbl_clock = Label(self.root, text = "Welcome to Workforce Information Network \t\t Date: {str} \t\t Time: HH:MM:SS", font = ("times new roman", 15), bg = "#4d636d", fg = "white")
-        self.lbl_clock.place(x = 0, y = 70, relwidth = 1, height = 30)
+        current_date = date.today()
+        current_time = datetime.now().strftime("%I:%M:%S %p")
+        self.lbl_clock = Label(root, text=f"Welcome to Workforce Information Network \t\t Date: {current_date} \t\tTime: {current_time}", font=("times new roman", 15), bg="#4d636d", fg="white")
+        self.lbl_clock.place(x=0, y=70, relwidth=1, height=30)
 
         # product frame        
         projectFrame1 = Frame(self.root, bd = 4, relief=RIDGE, bg = "white")
@@ -181,7 +185,7 @@ class BillClass:
         self.lbl_status = Label(Add_CartWidgetsFrame, text = "In Hand", font = ("times new roman", 15), bg = "white")
         self.lbl_status.place(x = 5, y = 70)
 
-        btn_clear_cart = Button(Add_CartWidgetsFrame, text = "Clear", font = ("times new roman", 15, "bold"), bg = "lightyellow", cursor = "hand2").place(x = 180, y = 70, width=150, height=30)
+        btn_clear_cart = Button(Add_CartWidgetsFrame, command = self.clear_cart, text = "Clear", font = ("times new roman", 15, "bold"), bg = "lightyellow", cursor = "hand2").place(x = 180, y = 70, width=150, height=30)
         btn_add_cart = Button(Add_CartWidgetsFrame, command=self.add_update_cart, text = "Add | Update Cart", font = ("times new roman", 15, "bold"), bg = "orange", cursor = "hand2").place(x = 340, y = 70, width=180, height=30)
 
         # Billing Area
@@ -336,7 +340,7 @@ class BillClass:
             self.bill_bottom()
 
             fp = open(f'bill/{str(self.invoice)}.txt', 'w')
-            fp.write(END, self.txt_bill_area.get('1.0', END))
+            fp.write(self.txt_bill_area.get('1.0', END))
             fp.close()
             messagebox.showinfo('Saved', "Bill has been generated/Saved in the Backend", parent = self.root)
             self.chk_print = 1
@@ -344,13 +348,13 @@ class BillClass:
 
     def bil_top(self):
         self.invoice = int(time.strftime("%H%M%S")) + int(time.strftime("%d%m%Y"))
-        bill_top_temp =f''''
+        bill_top_temp=f'''
 \t\tXYZ-Inventory
-\t Phone No 98725***** , Dehli-125001
+\t Phone No 0332***** , Karachi
 {str("="*47)}
  Customer Name: {self.var_cname.get()}
  Ph no. :{self.var_contact.get()}
- Bill No. {str(self.invoice)}\t\t\tDate: {str(time.strftime("%d%m%Y"))}
+ Bill No. {str(self.invoice)}\t\t\tDate: {str(time.strftime("%d/%m/%Y"))}
 {str("="*47)}
  Product Name\t\t\tQTY\tPrice
 {str("="*47)}
@@ -390,26 +394,26 @@ class BillClass:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
 
     def bill_middle(self):
-        con = sqlite3.connect(database = r'win.db')
+        con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
             for row in self.cart_list:
                 pid = row[0]
                 name = row[1]
-                length = int(row[4]) - int(row[3])
-                if int(row[3]) == int(row[4]):
-                    status = 'InActive'
-                if int(row[3]) != int(row[4]):
+                length = int(StringVar(row[4])) - int(StringVar(row[3]))
+                if int(StringVar(row[3])) == int(StringVar(row[4])):
+                    status = 'Inactive'
+                if int(StringVar(row[3])) != int(StringVar(row[4])):
                     status = 'Active'
 
-                price = float(row[2]) * int(row[3])
+                price = float(row[2])*int(StringVar(row[3]))
                 price = str(price)
                 self.txt_bill_area.insert(END, "\n "+name+"\t\t\t"+row[3]+"\tRs."+price)
-                # update qty in project table
-                cur.execute('Update project set qty = ?, status = ? where pid = ?',(
+                # update length in project table
+                cur.execute('update project set length = ?, status = ? where pid ?',(
                     length,
                     status,
-                    pid
+                    pid,
                 ))
                 con.commit()
             con.close()
@@ -438,9 +442,9 @@ class BillClass:
         self.show_cart()
 
     def update_date_time(self):
-        time_ = time.strftime("%I:%M:%S")
-        date_ = time.strftime("%d-%m-%Y")
-        self.lbl_clock.config(text = "Welcome to Workforce Information Network \t\t Date: {str(date_)}\t\t Time: {str(time_)}")
+        current_time = datetime.now().strftime("%I:%M:%S %p")
+        current_date = time.strftime("%d-%m-%Y")
+        self.lbl_clock.config(text = f"Welcome to Workforce Information Network \t\t Date: {current_date}\t\t Time: {current_time}")
         self.lbl_clock.after(200, self.update_date_time)
 
     def print_bill(self):

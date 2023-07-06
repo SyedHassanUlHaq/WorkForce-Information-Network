@@ -48,14 +48,14 @@ class salesClass:
         lbl_title2 = Label(bill_Frame, text="Customer Bill Area", font=("goudy old style", 20), bg = "orange").pack(side = TOP, fill = X)
 
         scrolly2 = Scrollbar(bill_Frame, orient = VERTICAL)
-        self.bill_area = Text(bill_Frame, font=("goudy old style", 15), bg = "lightyellow", yscrollcommand = scrolly2.set)
+        self.bill_area = Text(bill_Frame, bg = "lightyellow", yscrollcommand = scrolly2.set)
         scrolly2.pack(side = RIGHT, fill = Y)
         scrolly2.config(command = self.bill_area.yview)
         self.bill_area.pack(fill = BOTH, expand=1)
 
         # images
         self.bill_photo = Image.open("images/cat2.jpg")
-        self.bill_photo = self.bill_photo.resize((450, 300), Image.ANTIALIAS)
+        self.bill_photo = self.bill_photo.resize((450, 300), Image.LANCZOS)
         self.bill_photo = ImageTk.PhotoImage(self.bill_photo)
 
         lbl_image = Label(self.root, image = self.bill_photo, bd = 0)

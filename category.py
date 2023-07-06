@@ -53,14 +53,14 @@ class categoryClass:
         
         # images
         self.im1 = Image.open("images/cat.jpg")
-        self.im1 = self.im1.resize((500, 200), Image.ANTIALIAS)
+        self.im1 = self.im1.resize((500, 200), Image.LANCZOS)
         self.im1 = ImageTk.PhotoImage(self.im1)
 
         self.lbl_im1 = Label(self.root, image = self.im1, bd=2, relief=RAISED)
         self.lbl_im1.place(x=50, y=220)
 
         self.im2 = Image.open("images/category.jpg")
-        self.im2 = self.im2.resize((500, 200), Image.ANTIALIAS)
+        self.im2 = self.im2.resize((500, 200), Image.LANCZOS)
         self.im2 = ImageTk.PhotoImage(self.im2)
 
         self.lbl_im2 = Label(self.root, image = self.im1, bd=2, relief=RAISED)

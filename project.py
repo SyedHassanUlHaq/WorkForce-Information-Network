@@ -257,22 +257,35 @@ class projectClass:
     def search(self):
         con = sqlite3.connect(database='win.db')
         cur = con.cursor()
+    
         try:
             if self.var_searchby.get() == "Select":
-                messagebox.showerror("Error", "Select Search By option", parent = self.root)
+                messagebox.showerror("Error", "Select Search By option", parent=self.root)
             elif self.var_searchtxt.get() == "":
-                messagebox.showerror("Error", "Search Input is Required", parent = self.root)
+                messagebox.showerror("Error", "Search Input is Required", parent=self.root)
             else:
-                cur.execute("select * from project where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
+                # Construct the SQL query with the search criteria
+                query = "CREATE VIEW project_search_view AS SELECT * FROM project WHERE {} LIKE '%{}%'".format(self.var_searchby.get(), self.var_searchtxt.get())
+            
+                # Create the view
+                cur.execute(query)
+            
+                # Query the view to retrieve the filtered data
+                cur.execute("SELECT * FROM project_search_view")
                 rows = cur.fetchall()
+            
                 if len(rows) != 0:
                     self.project_table.delete(*self.project_table.get_children())
                     for row in rows:
                         self.project_table.insert('', END, values=row)
                 else:
                     messagebox.showerror("Error", "No record found !!")
+            
+                # Drop the view after use
+                cur.execute("DROP VIEW IF EXISTS project_search_view")
+        
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
+            messagebox.showerror("Error", f"Error due to: {str(ex)}", parent=self.root)
 
 
 if __name__=="__main__":

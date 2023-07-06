@@ -196,20 +196,32 @@ class customerClass:
     def search(self):
         con = sqlite3.connect(database='win.db')
         cur = con.cursor()
+
         try:
             if self.var_searchtxt.get() == "":
-                messagebox.showerror("Error", "Invoice No. is Required", parent = self.root)
+                messagebox.showerror("Error", "Invoice No. is Required", parent=self.root)
             else:
-                cur.execute("select * from customer where invoice = ?", (self.var_searchtxt.get(),))
+                # Construct the SQL query with the search criteria
+                query = "CREATE VIEW customer_search_view AS SELECT * FROM customer WHERE invoice = '{}'".format(self.var_searchtxt.get())
+            
+                # Create the view
+                cur.execute(query)
+            
+                # Query the view to retrieve the filtered data
+                cur.execute("SELECT * FROM customer_search_view")
                 row = cur.fetchone()
-                if row != None:
+            
+                if row is not None:
                     self.customerTable.delete(*self.customerTable.get_children())
                     self.customerTable.insert('', END, values=row)
                 else:
                     messagebox.showerror("Error", "No record found !!")
-        except Exception as ex:
-            messagebox.showerror("Error",f"Error due to : {str(ex)}", parent=self.root)
+            
+                # Drop the view after use
+                cur.execute("DROP VIEW IF EXISTS customer_search_view")
 
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to: {str(ex)}", parent=self.root)
 
 if __name__=="__main__":
     root = Tk()

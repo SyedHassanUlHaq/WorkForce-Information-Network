@@ -278,23 +278,35 @@ class employeeClass:
     def search(self):
         con = sqlite3.connect(database='win.db')
         cur = con.cursor()
+    
         try:
             if self.var_searchby.get() == "Select":
-                messagebox.showerror("Error", "Select Search By option", parent = self.root)
+                messagebox.showerror("Error", "Select Search By option", parent=self.root)
             elif self.var_searchtxt.get() == "":
-                messagebox.showerror("Error", "Search Input is Required", parent = self.root)
+                messagebox.showerror("Error", "Search Input is Required", parent=self.root)
             else:
-                cur.execute("select * from employee where "+self.var_searchby.get()+" LIKE '%"+self.var_searchtxt.get()+"%'")
+                # Construct the SQL query with the search criteria
+                query = "CREATE VIEW employee_search_view AS SELECT * FROM employee WHERE " + self.var_searchby.get() + " LIKE '%{}%'".format(self.var_searchtxt.get())
+            
+                # Create the view
+                cur.execute(query)
+            
+                # Query the view to retrieve the filtered data
+                cur.execute("SELECT * FROM employee_search_view")
                 rows = cur.fetchall()
+            
                 if len(rows) != 0:
                     self.EmployeeTable.delete(*self.EmployeeTable.get_children())
                     for row in rows:
                         self.EmployeeTable.insert('', END, values=row)
                 else:
                     messagebox.showerror("Error", "No record found !!")
+            
+                # Drop the view after use
+                cur.execute("DROP VIEW IF EXISTS employee_search_view")
+        
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
-
+            messagebox.showerror("Error", f"Error due to: {str(ex)}", parent=self.root)
 
 if __name__=="__main__":
     root = Tk()

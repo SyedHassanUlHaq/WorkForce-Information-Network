@@ -304,7 +304,7 @@ class BillClass:
             # price_cal = int(self.var_length.get())*float(self.var_stipend.get())
             # price_cal = float(price_cal)
             price_cal = self.var_stipend.get()
-            cart_data = [self.var_pid.get(), self.var_pname.get(), price_cal, self.var_length.get(), self.var_status.get]
+            cart_data = [self.var_pid.get(), self.var_pname.get(), price_cal, self.var_length.get(), self.var_status.get()]
             # update cart
             present = 'no'
             index_ = 0
@@ -394,33 +394,14 @@ class BillClass:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
 
     def bill_middle(self):
-        con = sqlite3.connect(database=r'ims.db')
-        cur = con.cursor()
-        try:
-            for row in self.cart_list:
-                pid = row[0]
-                name = row[1]
-                length = int(StringVar(row[4])) - int(StringVar(row[3]))
-                if int(StringVar(row[3])) == int(StringVar(row[4])):
-                    status = 'Inactive'
-                if int(StringVar(row[3])) != int(StringVar(row[4])):
-                    status = 'Active'
-
-                price = float(row[2])*int(StringVar(row[3]))
-                price = str(price)
-                self.txt_bill_area.insert(END, "\n "+name+"\t\t\t"+row[3]+"\tRs."+price)
+        for row in self.cart_list:
+            name = row[1]
+            qty = row[3]
+            price = float(row[2])*int(row[3])
+            price = str(price)
+            self.txt_bill_area.insert(END, "\n "+name+"\t\t\t"+row[3]+"\tRs."+price)
                 # update length in project table
-                cur.execute('update project set length = ?, status = ? where pid ?',(
-                    length,
-                    status,
-                    pid,
-                ))
-                con.commit()
-            con.close()
-            self.show()
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent = self.root)
-
+            
     def clear_cart(self):
         self.var_pid.set('')
         self.var_pname.set('')

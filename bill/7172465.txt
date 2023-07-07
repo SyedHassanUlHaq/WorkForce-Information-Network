@@ -2,17 +2,19 @@
 		XYZ-Inventory
 	 Phone No 0332***** , Karachi
 ===============================================
- Customer Name: f
- Ph no. :4
- Bill No. 7096445			Date: 07/07/2023
+ Client Name: sds
+ Ph no. :432
+ Bill No. 7172465			Date: 07/07/2023
 ===============================================
  Product Name			QTY	Price
 ===============================================
         
+ desktop			3	Rs.118296.0
+ LMS			2	Rs.113508.0
 ===============================================
- Bill Amount				Rs. 648468.0
- Discount				Rs.32423.4
- Net Pay				Rs.616044.6
+ Bill Amount				Rs. 231804.0
+ Discount				Rs.11590.2
+ Net Pay				Rs.220213.8
 ===============================================
 
         

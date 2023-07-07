@@ -21,7 +21,7 @@ class salesClass:
         self.bill_list = []
         self.var_invoice = StringVar()
     # title
-        lbl_title = Label(self.root, text="View Customer Bills", font=("goudy old style", 30), bg = "#184a45", fg = "white", bd = 3, relief=RIDGE).pack(side = TOP, fill = X, padx=10, pady=20)
+        lbl_title = Label(self.root, text="View Client Bills", font=("goudy old style", 30), bg = "#184a45", fg = "white", bd = 3, relief=RIDGE).pack(side = TOP, fill = X, padx=10, pady=20)
 
         lbl_invoice = Label(self.root, text = "Invoice No.", font = ("times new roman", 15), bg = "white").place(x=50, y=100)
 
@@ -45,7 +45,7 @@ class salesClass:
         bill_Frame = Frame(self.root, bd = 3, relief = RIDGE)
         bill_Frame.place(x = 280, y = 140, width = 410, height=330)
 
-        lbl_title2 = Label(bill_Frame, text="Customer Bill Area", font=("goudy old style", 20), bg = "orange").pack(side = TOP, fill = X)
+        lbl_title2 = Label(bill_Frame, text="Client Bill Area", font=("goudy old style", 20), bg = "orange").pack(side = TOP, fill = X)
 
         scrolly2 = Scrollbar(bill_Frame, orient = VERTICAL)
         self.bill_area = Text(bill_Frame, bg = "lightyellow", yscrollcommand = scrolly2.set)

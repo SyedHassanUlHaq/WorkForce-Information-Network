@@ -87,18 +87,18 @@ class BillClass:
         self.project_Table.bind("<ButtonRelease-1>", self.get_data)
         lbl_notes = Label(projectFrame1, text="Note:'Enter 0 Quantity to remove product from the Cart'", font=("goudy old style", 12), anchor = 'w', bg = "white", fg = "red").pack(side = BOTTOM, fill = X)
 
-        # customer frame
+        # Client frame
         self.var_cname = StringVar()
         self.var_contact = StringVar()
-        customerFrame = Frame(self.root, bd = 4, relief=RIDGE, bg = "white")
-        customerFrame.place(x=420, y=110, width=530, height=70)
+        ClientFrame = Frame(self.root, bd = 4, relief=RIDGE, bg = "white")
+        ClientFrame.place(x=420, y=110, width=530, height=70)
 
-        cTitle = Label(customerFrame, text="Customer Details", font = ("goudy old style", 15), bg = "lightgray").pack(side = TOP, fill = X)
-        lbl_name = Label(customerFrame, text="Name", font = ("times new roman", 15), bg = "white").place(x = 5, y = 35)
-        txt_name = Entry(customerFrame, textvariable=self.var_cname, font = ("times new roman", 13), bg = "lightyellow").place(x = 80, y = 35, width = 180)
+        cTitle = Label(ClientFrame, text="Client Details", font = ("goudy old style", 15), bg = "lightgray").pack(side = TOP, fill = X)
+        lbl_name = Label(ClientFrame, text="Name", font = ("times new roman", 15), bg = "white").place(x = 5, y = 35)
+        txt_name = Entry(ClientFrame, textvariable=self.var_cname, font = ("times new roman", 13), bg = "lightyellow").place(x = 80, y = 35, width = 180)
         
-        lbl_contact = Label(customerFrame, text="Contact No.", font = ("times new roman", 15), bg = "white").place(x = 270, y = 35)
-        txt_contact = Entry(customerFrame, textvariable=self.var_contact, font = ("times new roman", 13), bg = "lightyellow").place(x = 380, y = 35, width = 140)
+        lbl_contact = Label(ClientFrame, text="Contact No.", font = ("times new roman", 15), bg = "white").place(x = 270, y = 35)
+        txt_contact = Entry(ClientFrame, textvariable=self.var_contact, font = ("times new roman", 13), bg = "lightyellow").place(x = 380, y = 35, width = 140)
         
         # Cal cart Frame
         cal_cart_Frame = Frame(self.root, bd = 2, relief=RIDGE, bg = "white")
@@ -194,7 +194,7 @@ class BillClass:
         billFrame = Frame(self.root, bd = 2, relief = RIDGE, bg = "white")
         billFrame.place(x = 953, y = 110, width = 410, height = 410)
 
-        BTitle = Label(billFrame, text="Customer Bill Area", font = ("goudy old style", 20, "bold"), bg = "#f44336", fg = "white").pack(side = TOP, fill = X)
+        BTitle = Label(billFrame, text="Client Bill Area", font = ("goudy old style", 20, "bold"), bg = "#f44336", fg = "white").pack(side = TOP, fill = X)
         scrolly = Scrollbar(billFrame, orient = VERTICAL)
         scrolly.pack(side = RIGHT, fill = Y)
 
@@ -328,7 +328,7 @@ class BillClass:
 
     def generate_bill(self):
         if self.var_cname.get() == '' or self.var_contact.get() == '':
-            messagebox.showerror("Error", f"Customer Details are required", parent = self.root)
+            messagebox.showerror("Error", f"Client Details are required", parent = self.root)
         elif len(self.cart_list) == 0:
             messagebox.showerror("Error", f"Please Add product to the Cart !!!", parent = self.root)
         else:
@@ -352,7 +352,7 @@ class BillClass:
 \t\tXYZ-Inventory
 \t Phone No 0332***** , Karachi
 {str("="*47)}
- Customer Name: {self.var_cname.get()}
+ Client Name: {self.var_cname.get()}
  Ph no. :{self.var_contact.get()}
  Bill No. {str(self.invoice)}\t\t\tDate: {str(time.strftime("%d/%m/%Y"))}
 {str("="*47)}

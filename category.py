@@ -130,7 +130,7 @@ class categoryClass:
             """)
 
             con.commit()
-            messagebox.showinfo("Trigger Created", "Delete trigger for customer table created successfully")
+            messagebox.showinfo("Trigger Created", "Delete trigger for Client table created successfully")
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error creating trigger: {str(ex)}")

@@ -14,7 +14,7 @@ from PIL import ImageTk
 
 from employee import employeeClass
 
-from customer import customerClass
+from Client import ClientClass
 
 from category import categoryClass
 
@@ -59,7 +59,7 @@ class IMS:
         self.icon_side = PhotoImage(file = "images/side.png")
         lbl_menu = Label(LeftMenu, text = "Menu", font=("times new roman", 20), bg="#009688", cursor="hand2").pack(side = TOP, fill = X)
         btn_employee = Button(LeftMenu, text = "Employee", command= self.employee, image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
-        btn_customer = Button(LeftMenu, command = self.customer, text = "Customer", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
+        btn_Client = Button(LeftMenu, command = self.Client, text = "Client", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_category = Button(LeftMenu, command = self.category, text = "Category", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_project = Button(LeftMenu, command = self.project, text = "Project", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
         btn_sales = Button(LeftMenu,command=self.sales, text = "Sales", image = self.icon_side, compound = LEFT, padx = 5,  anchor = "w", font=("times new roman", 20, "bold"), bg="white", bd = 3, cursor="hand2").pack(side = TOP, fill = X)
@@ -90,9 +90,9 @@ class IMS:
         self.new_win = Toplevel(self.root)
         self.new_obj = employeeClass(self.new_win)
 
-    def customer(self):
+    def Client(self):
         self.new_win = Toplevel(self.root)
-        self.new_obj = customerClass(self.new_win)
+        self.new_obj = ClientClass(self.new_win)
 
     def category(self):
         self.new_win = Toplevel(self.root)
@@ -114,9 +114,9 @@ class IMS:
             project = cur.fetchall()
             self.lbl_product.config(text = f'Total Project\n[{str(len(project))}]')
 
-            cur.execute("select * from customer")
-            customer = cur.fetchall()
-            self.lbl_supplier.config(text = f'Total customers\n[{str(len(customer))}]')
+            cur.execute("select * from Client")
+            Client = cur.fetchall()
+            self.lbl_supplier.config(text = f'Total Clients\n[{str(len(Client))}]')
 
             cur.execute("select * from category")
             category = cur.fetchall()

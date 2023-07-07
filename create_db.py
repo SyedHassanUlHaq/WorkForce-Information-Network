@@ -11,10 +11,10 @@ def create_db():
 
 
 
-    cur.execute("CREATE TABLE IF NOT EXISTS customer(invoice INTEGER PRIMARY KEY AUTOINCREMENT, name text, contact text, desc text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS Client(invoice INTEGER PRIMARY KEY AUTOINCREMENT, name text, contact text, desc text)")
     con.commit()
 
-    cur.execute("CREATE TABLE IF NOT EXISTS customer_backup(invoice INTEGER PRIMARY KEY AUTOINCREMENT, name text, contact text, desc text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS Client_backup(invoice INTEGER PRIMARY KEY AUTOINCREMENT, name text, contact text, desc text)")
     con.commit()
 
 
@@ -27,10 +27,10 @@ def create_db():
 
 
 
-    cur.execute("CREATE TABLE IF NOT EXISTS project(pid INTEGER PRIMARY KEY AUTOINCREMENT, Customer text, Category text, name text, stipend text, length text, status text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS project(pid INTEGER PRIMARY KEY AUTOINCREMENT, Client text, Category text, name text, stipend text, length text, status text)")
     con.commit()
 
-    cur.execute("CREATE TABLE IF NOT EXISTS project_backup(pid INTEGER PRIMARY KEY AUTOINCREMENT, Customer text, Category text, name text, stipend text, length text, status text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS project_backup(pid INTEGER PRIMARY KEY AUTOINCREMENT, Client text, Category text, name text, stipend text, length text, status text)")
     con.commit()
 
 

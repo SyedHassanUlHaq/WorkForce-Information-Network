@@ -40,7 +40,7 @@ class projectClass:
 
         # column 1
         lbl_category = Label(project_Frame, text = "Category", font = ("goudy old style", 18), bg = "white").place(x = 30, y = 60)
-        lbl_customer = Label(project_Frame, text = "Customer", font = ("goudy old style", 18), bg = "white").place(x = 30, y = 110)
+        lbl_Client = Label(project_Frame, text = "Client", font = ("goudy old style", 18), bg = "white").place(x = 30, y = 110)
         lbl_Project_name = Label(project_Frame, text = "Name", font = ("goudy old style", 18), bg = "white").place(x = 30, y = 160)
         lbl_stipend = Label(project_Frame, text = "stipend", font = ("goudy old style", 18), bg = "white").place(x = 30, y = 210)
         lbl_project_length = Label(project_Frame, text = "Length", font = ("goudy old style", 18), bg = "white").place(x = 30, y = 260)
@@ -74,7 +74,7 @@ class projectClass:
         SearchFrame.place(x = 480, y = 10, width = 600, height = 80)
 
         # options
-        cmb_search = ttk.Combobox(SearchFrame, textvariable= self.var_searchby, values = ("Select", "Category", "Customer", "Name"), state = 'readonly', justify = CENTER, font = ("goudy old style", 15))
+        cmb_search = ttk.Combobox(SearchFrame, textvariable= self.var_searchby, values = ("Select", "Category", "Client", "Name"), state = 'readonly', justify = CENTER, font = ("goudy old style", 15))
         cmb_search.place(x = 10, y = 10, width = 180)
         cmb_search.current(0)
 
@@ -89,14 +89,14 @@ class projectClass:
         scrolly = Scrollbar(p_frame, orient = VERTICAL)
         scrollx = Scrollbar(p_frame, orient = HORIZONTAL)
 
-        self.project_table = ttk.Treeview(p_frame, columns = ("pid", "Customer", "Category", "name", "stipend", "length", "status"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        self.project_table = ttk.Treeview(p_frame, columns = ("pid", "Client", "Category", "name", "stipend", "length", "status"), yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
         scrollx.pack(side = BOTTOM, fill = X)
         scrolly.pack(side=RIGHT, fill=Y)
         scrollx.config(command=self.project_table.xview)
         scrolly.config(command=self.project_table.yview)
         self.project_table.heading("pid", text = "P ID")
         self.project_table.heading("Category", text = "Category")
-        self.project_table.heading("Customer", text = "Customer")
+        self.project_table.heading("Client", text = "Client")
         self.project_table.heading("name", text = "Name")
         self.project_table.heading("stipend", text = "Stipend")
         self.project_table.heading("length", text = "Length")
@@ -106,7 +106,7 @@ class projectClass:
 
         self.project_table.column("pid", width = 90)
         self.project_table.column("Category", width = 100)
-        self.project_table.column("Customer", width = 100)
+        self.project_table.column("Client", width = 100)
         self.project_table.column("name", width = 100)
         self.project_table.column("stipend", width = 100)
         self.project_table.column("length", width = 100)
@@ -130,7 +130,7 @@ class projectClass:
                 for i in cat:
                     self.cat_list.append(i[0])
 
-            cur.execute("select name from customer")
+            cur.execute("select name from Client")
             cust = cur.fetchall()
             if len(cust) > 0:
                 del self.cust_list[:]
@@ -153,7 +153,7 @@ class projectClass:
                 if row != None:
                     messagebox.showerror("Error", "Project already present, try different", parent = self.root)
                 else:
-                    cur.execute("Insert into project(Customer, Category, name, stipend, length, status) values(?, ?, ?, ?, ?, ?)",
+                    cur.execute("Insert into project(Client, Category, name, stipend, length, status) values(?, ?, ?, ?, ?, ?)",
                                 [
                                     self.var_cat.get(),
                                     self.var_cust.get(),
@@ -205,7 +205,7 @@ class projectClass:
                 if row == None:
                     messagebox.showerror("Error", "Invalid project ID", parent = self.root)
                 else:
-                    cur.execute("Update project set Category = ?, customer = ?, name = ?, stipend = ?, length = ?, status = ? where pid = ?",
+                    cur.execute("Update project set Category = ?, Client = ?, name = ?, stipend = ?, length = ?, status = ? where pid = ?",
                                 [
                                     self.var_cat.get(),
                                     self.var_cust.get(),
@@ -236,8 +236,8 @@ class projectClass:
                 FOR EACH ROW
                 BEGIN
                     -- Open the file in append mode and write the employee information
-                    INSERT INTO project_backup (pid, customer, category, name, stipend, length, status)
-                    SELECT OLD.pid, OLD.customer, OLD.category, OLD.name, OLD.stipend, OLD.Length, OLD.status;
+                    INSERT INTO project_backup (pid, Client, category, name, stipend, length, status)
+                    SELECT OLD.pid, OLD.Client, OLD.category, OLD.name, OLD.stipend, OLD.Length, OLD.status;
                 END;
             """)
 
@@ -258,7 +258,7 @@ class projectClass:
             with open('Backups/Projects_Backup.txt', 'a') as file_handle:
                 for row in rows:
                     file_handle.write('P.I.D: ' + str(row[0]) + '\t')
-                    file_handle.write('Customer: ' + row[1] + '\t')
+                    file_handle.write('Client: ' + row[1] + '\t')
                     file_handle.write('Category: ' + row[2] + '\t')
                     file_handle.write('Name: ' + row[3] + '\t')
                     file_handle.write('Stipend: ' + row[4] + '\t')

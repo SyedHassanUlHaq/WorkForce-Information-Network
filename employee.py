@@ -235,26 +235,94 @@ class employeeClass:
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
 
+    def create_delete_trigger(self):
+        con = sqlite3.connect('win.db')
+        cur = con.cursor()
+
+        try:
+            # Drop the trigger if it already exists
+            cur.execute("DROP TRIGGER IF EXISTS delete_employee_trigger")
+
+            # Create the trigger
+            cur.execute("""
+                CREATE TRIGGER delete_employee_trigger
+                BEFORE DELETE ON employee
+                FOR EACH ROW
+                BEGIN
+                    -- Open the file in append mode and write the employee information
+                    INSERT INTO employee_backup (eid, name, email, gender, contact, dob, doj, pass, utype, address, salary)
+                    SELECT OLD.eid, OLD.name, OLD.email, OLD.gender, OLD.contact, OLD.dob, OLD.doj, OLD.pass, OLD.utype, OLD.address, OLD.salary;
+                END;
+            """)
+
+            con.commit()
+            messagebox.showinfo("Trigger Created", "Delete trigger for employee table created successfully")
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error creating trigger: {str(ex)}")
+
+# Function to add backed-up data to text file
+    def add_backup_data_to_file(self):
+        con = sqlite3.connect('win.db')
+        cur = con.cursor()
+
+        try:
+            cur.execute("SELECT * FROM employee_backup")
+            rows = cur.fetchall()
+
+            with open('Backups/Employees_Backup.txt', 'a') as file_handle:
+                for row in rows:
+                    file_handle.write('Employee ID: ' + str(row[0]) + '\t')
+                    file_handle.write('Employee Name: ' + row[1] + '\t')
+                    file_handle.write('Employee Email: ' + row[2] + '\t')
+                    file_handle.write('Employee Gender: ' + row[3] + '\t')
+                    file_handle.write('Employee Contact: ' + row[4] + '\t')
+                    file_handle.write('Employee dob: ' + row[5] + '\t')
+                    file_handle.write('Employee doj: ' + row[6] + '\t')
+                    file_handle.write('Employee Password: ' + row[7] + '\t')
+                    file_handle.write('Employee UserType: ' + row[8] + '\t')
+                    file_handle.write('Employee Address: ' + row[9] + '\t')
+                    file_handle.write('Employee Salary: ' + row[10] + '\t')
+                    file_handle.write('\n')
+
+            con.commit()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to: {str(ex)}")
+
+# Delete function
     def delete(self):
         con = sqlite3.connect('win.db')
         cur = con.cursor()
-        try:
-            if self.var_emp_id.get() == "":
-                messagebox.showerror("Error", "Employee ID Must be required", parent=self.root)
-            else:
-                cur.execute("Select * from employee where eid = ?", (self.var_emp_id.get(),))
+        if self.var_emp_id.get() == "":
+            messagebox.showerror("Error", "Employee ID must be required", parent=self.root)
+        else:
+            self.create_delete_trigger()  # Create the trigger
+
+            # con = sqlite3.connect('win.db')
+            # cur = con.cursor()
+
+            try:
+                cur.execute("SELECT * FROM employee WHERE eid = ?", (self.var_emp_id.get(),))
                 row = cur.fetchone()
-                if row == None:
+
+                if row is None:
                     messagebox.showerror("Error", "Invalid Employee ID", parent=self.root)
                 else:
-                    op = messagebox.askyesno("Confirm", "Do you really want to delete?", parent = self.root)
-                    if op == True:
-                        cur.execute("delete from employee where eid = ?", (self.var_emp_id.get(),))
+                    op = messagebox.askyesno("Confirm", "Do you really want to delete?", parent=self.root)
+                    if op:
+                        # Delete the employee from the table (trigger will handle backup)
+                        cur.execute("DELETE FROM employee WHERE eid = ?", (self.var_emp_id.get(),))
                         con.commit()
+
+                        self.add_backup_data_to_file()  # Add backed-up data to text file
+
                         messagebox.showinfo("Delete", "Employee Deleted Successfully")
                         self.show()
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to: {str(ex)}")
+
+            except Exception as ex:
+                messagebox.showerror("Error", f"Error due to: {str(ex)}")
+
 
     def clear(self):
 

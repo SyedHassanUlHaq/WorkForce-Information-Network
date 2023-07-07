@@ -221,6 +221,56 @@ class projectClass:
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}")
 
+    def create_delete_trigger(self):
+        con = sqlite3.connect('win.db')
+        cur = con.cursor()
+
+        try:
+            # Drop the trigger if it already exists
+            cur.execute("DROP TRIGGER IF EXISTS delete_project_trigger")
+
+            # Create the trigger
+            cur.execute("""
+                CREATE TRIGGER delete_project_trigger
+                BEFORE DELETE ON project
+                FOR EACH ROW
+                BEGIN
+                    -- Open the file in append mode and write the employee information
+                    INSERT INTO project_backup (pid, customer, category, name, stipend, length, status)
+                    SELECT OLD.pid, OLD.customer, OLD.category, OLD.name, OLD.stipend, OLD.Length, OLD.status;
+                END;
+            """)
+
+            con.commit()
+            messagebox.showinfo("Trigger Created", "Delete trigger for project table created successfully")
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error creating trigger: {str(ex)}")
+
+    def add_backup_data_to_file(self):
+        con = sqlite3.connect('win.db')
+        cur = con.cursor()
+
+        try:
+            cur.execute("SELECT * FROM project_backup")
+            rows = cur.fetchall()
+
+            with open('Backups/Projects_Backup.txt', 'a') as file_handle:
+                for row in rows:
+                    file_handle.write('P.I.D: ' + str(row[0]) + '\t')
+                    file_handle.write('Customer: ' + row[1] + '\t')
+                    file_handle.write('Category: ' + row[2] + '\t')
+                    file_handle.write('Name: ' + row[3] + '\t')
+                    file_handle.write('Stipend: ' + row[4] + '\t')
+                    file_handle.write('Length: ' + row[5] + '\t')
+                    file_handle.write('Status: ' + row[6] + '\t')
+                    file_handle.write('\n')
+
+            con.commit()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to: {str(ex)}")
+
     def delete(self):
         con = sqlite3.connect('win.db')
         cur = con.cursor()
@@ -228,6 +278,7 @@ class projectClass:
             if self.var_pid.get() == "":
                 messagebox.showerror("Error", "Select Project from list", parent=self.root)
             else:
+                self.create_delete_trigger()
                 cur.execute("Select * from project where pid = ?", (self.var_pid.get(),))
                 row = cur.fetchone()
                 if row == None:
@@ -237,6 +288,7 @@ class projectClass:
                     if op == True:
                         cur.execute("delete from project where pid = ?", (self.var_pid.get(),))
                         con.commit()
+                        self.add_backup_data_to_file()
                         messagebox.showinfo("Delete", "Project Deleted Successfully")
                         self.clear()
         except Exception as ex:

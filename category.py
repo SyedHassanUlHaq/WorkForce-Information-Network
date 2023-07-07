@@ -109,6 +109,51 @@ class categoryClass:
         self.var_cat_id.set(row[0]),
         self.var_name.set(row[1]),
 
+    def create_delete_trigger(self):
+        con = sqlite3.connect('win.db')
+        cur = con.cursor()
+
+        try:
+            # Drop the trigger if it already exists
+            cur.execute("DROP TRIGGER IF EXISTS delete_category_trigger")
+
+            # Create the trigger
+            cur.execute("""
+                CREATE TRIGGER delete_category_trigger
+                BEFORE DELETE ON category
+                FOR EACH ROW
+                BEGIN
+                    -- Open the file in append mode and write the employee information
+                    INSERT INTO category_backup (cid, name)
+                    SELECT OLD.cid, OLD.name;
+                END;
+            """)
+
+            con.commit()
+            messagebox.showinfo("Trigger Created", "Delete trigger for customer table created successfully")
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error creating trigger: {str(ex)}")
+
+    def add_backup_data_to_file(self):
+        con = sqlite3.connect('win.db')
+        cur = con.cursor()
+
+        try:
+            cur.execute("SELECT * FROM category_backup")
+            rows = cur.fetchall()
+
+            with open('Backups/Category_Backup.txt', 'a') as file_handle:
+                for row in rows:
+                    file_handle.write('C.I.D: ' + str(row[0]) + '\t')
+                    file_handle.write('Name: ' + row[1] + '\t')
+                    file_handle.write('\n')
+
+            con.commit()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to: {str(ex)}")
+
     def delete(self):
         con = sqlite3.connect('win.db')
         cur = con.cursor()
@@ -116,6 +161,7 @@ class categoryClass:
             if self.var_cat_id.get() == "":
                 messagebox.showerror("Error", "please select category from the list", parent=self.root)
             else:
+                self.create_delete_trigger()
                 cur.execute("Select * from category where cid = ?", (self.var_cat_id.get(),))
                 row = cur.fetchone()
                 if row == None:
@@ -125,6 +171,7 @@ class categoryClass:
                     if op == True:
                         cur.execute("delete from category where cid = ?", (self.var_cat_id.get(),))
                         con.commit()
+                        self.add_backup_data_to_file()
                         messagebox.showinfo("Delete", "category Deleted Successfully")
                         self.show()
                         # self.var_cat_id.set("")

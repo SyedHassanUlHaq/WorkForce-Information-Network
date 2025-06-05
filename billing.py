@@ -28,7 +28,7 @@ class BillClass:
         self.chk_print = 0
 
         # title
-        self.icon_title = PhotoImage(file = r"images\logo1.png")
+        self.icon_title = PhotoImage(file = r"images/logo1.png")
         title = Label(self.root, text = "Workforce Information Network", image = self.icon_title, compound = LEFT, font = ("times new roman", 40, "bold"), bg = "#010c48", fg = "white", anchor = "w", padx = 20).place(x = 0, y = 0, relwidth = 2, height = 70)
 
         # button_logout

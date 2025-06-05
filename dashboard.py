@@ -34,7 +34,7 @@ class IMS:
         self.root.config(bg = "white")
 
         # title
-        self.icon_title = PhotoImage(file = r"images\logo1.png")
+        self.icon_title = PhotoImage(file = r"images/logo1.png")
         title = Label(self.root, text = "Workforce Information Network", image = self.icon_title, compound = LEFT, font = ("times new roman", 40, "bold"), bg = "#010c48", fg = "white", anchor = "w", padx = 20).place(x = 0, y = 0, relwidth = 2, height = 70)
 
         # button_logout
@@ -46,7 +46,7 @@ class IMS:
         self.lbl_clock = Label(root, text=f"Welcome to Workforce Information Network \t\t Date: {current_date} \t\tTime: {current_time}", font=("times new roman", 15), bg="#4d636d", fg="white")
         self.lbl_clock.place(x=0, y=70, relwidth=1, height=30)
         # Left Menu
-        self.MenuLogo = Image.open(r"images\menu_im.png")
+        self.MenuLogo = Image.open(r"images/menu_im.png")
         self.MenuLogo = self.MenuLogo.resize((200, 200), Image.LANCZOS)
         self.MenuLogo = ImageTk.PhotoImage(self.MenuLogo)
 

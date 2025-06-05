@@ -6,3 +6,11 @@ Employee ID: 5	Employee Name: s	Employee Email: s	Employee Gender: Male	Employee
 	Employee Salary: s	
 Employee ID: 6	Employee Name: s	Employee Email: s	Employee Gender: Male	Employee Contact: s	Employee dob: s	Employee doj: s	Employee Password: ss	Employee UserType: Admin	Employee Address: s
 	Employee Salary: s	
+Employee ID: 3	Employee Name: Omer Butt	Employee Email: omer@gmail.com	Employee Gender: Male	Employee Contact: 03321323431	Employee dob: 19/06/2000	Employee doj: 22/03/2020	Employee Password: 12345678	Employee UserType: Employee	Employee Address: xyz
+	Employee Salary: 49000	
+Employee ID: 4	Employee Name: s	Employee Email: s	Employee Gender: Male	Employee Contact: s	Employee dob: ss	Employee doj: s	Employee Password: s	Employee UserType: Admin	Employee Address: s
+	Employee Salary: s	
+Employee ID: 5	Employee Name: s	Employee Email: s	Employee Gender: Male	Employee Contact: s	Employee dob: s	Employee doj: s	Employee Password: s	Employee UserType: Admin	Employee Address: s
+	Employee Salary: s	
+Employee ID: 6	Employee Name: s	Employee Email: s	Employee Gender: Male	Employee Contact: s	Employee dob: s	Employee doj: s	Employee Password: ss	Employee UserType: Admin	Employee Address: s
+	Employee Salary: s	
